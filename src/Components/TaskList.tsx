@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from "react";
-import TaskItem, { Task } from "./TaskItem";
+import React, { useState, useEffect } from 'react';
+import TaskItem, { Task } from './TaskItem';
 
 type TaskListProps = { tasks?: Task[] };
 
 const TaskList = (props: TaskListProps): JSX.Element => {
-  const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState<Task[]>(() => {
+  const [newTask, setNewTask] = useState('');
+  const [tasks, setTasks] = useState<Task[]>([]);
+  
+  useEffect(() => {
     if (props.tasks) {
       return props.tasks;
     }
-    const storedTasks = localStorage.getItem("tasks");
+    const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
       return JSON.parse(storedTasks);
     }
     return [];
-  });
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
   const handleNewTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,11 +27,11 @@ const TaskList = (props: TaskListProps): JSX.Element => {
   };
 
   const handleAddTask = () => {
-    if (newTask.trim() === "") return;
+    if (newTask.trim() === '') return;
     const newId = tasks.length === 0 ? 1 : tasks[tasks.length - 1].id + 1;
     const newTaskItem = { id: newId, text: newTask, completed: false };
     setTasks(existingTasks => [...existingTasks, newTaskItem]);
-    setNewTask("");
+    setNewTask('');
   };
 
   const handleRemoveTask = (taskId: number) => {
