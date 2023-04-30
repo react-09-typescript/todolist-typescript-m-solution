@@ -9,14 +9,14 @@ const TaskList = (props: TaskListProps): JSX.Element => {
   
   useEffect(() => {
     setTasks(
-    if (props.tasks) {
-      return props.tasks;
-    }
-    const storedTasks = localStorage.getItem('tasks');
-    if (storedTasks) {
-      return JSON.parse(storedTasks);
-    }
-    return [];
+      if (props.tasks) {
+        return props.tasks;
+      }
+      const storedTasks = localStorage.getItem('tasks');
+      if (storedTasks) {
+        return JSON.parse(storedTasks);
+      }
+      return [];
   )}, []);
 
   useEffect(() => {
