@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import TaskItem, { Task } from './TaskItem';
+import TaskItem from './TaskItem';
 
 type TaskListProps = { tasks?: Task[] };
 
 const TaskList = (props: TaskListProps): JSX.Element => {
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState<Task[]>([]);
-  
-  useEffect(() => {
-    setTasks(() => {
-      if (props.tasks) {
-        return props.tasks;
-      }
-      const storedTasks = localStorage.getItem('tasks');
-      if (storedTasks) {
-        return JSON.parse(storedTasks);
-      }
-      return [];
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const storedTasks = localStorage.getItem('tasks');
+
+    if (props.tasks) {
+      return props.tasks;
     }
-  )}, []);
+    
+    if (storedTasks) {
+      return JSON.parse(storedTasks);
+    }
+    return [];
+  });
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));

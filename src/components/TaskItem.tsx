@@ -1,15 +1,3 @@
-export type Task = {
-  id: number;
-  text: string;
-  completed: boolean;
-};
-
-type TaskProps = {
-  task: Task;
-  onRemove: (id: number) => void;
-  onToggle: (id: number) => void;
-};
-
 const TaskItem = ({ task, onRemove, onToggle }: TaskProps): JSX.Element => {
   const handleToggle = () => {
     onToggle(task.id);
