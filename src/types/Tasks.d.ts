@@ -10,4 +10,4 @@ type TaskProps = {
     onToggle: (id: number) => void;
   };
 
-type TaskListProps = { tasks?: Task[] };
+type TaskListProps = { tasks: Task[] };

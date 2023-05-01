@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TaskItem from './TaskItem';
 
-type TaskListProps = { tasks?: Task[] };
+const defaultProps: TaskListProps = {
+  tasks: []
+};
 
 const TaskList = (props: TaskListProps): JSX.Element => {
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    const storedTasks = localStorage.getItem('tasks');
-
-    if (props.tasks) {
-      return props.tasks;
-    }
-    
-    if (storedTasks) {
-      return JSON.parse(storedTasks);
-    }
-    return [];
-  });
+  const [tasks, setTasks] = useState<Task[]>(props.tasks);
+  const isMounted = useRef(false);
 
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    const storedTasks = localStorage.getItem('tasks');
+    if (tasks.length === 0 && storedTasks !== null) {
+      setTasks(JSON.parse(storedTasks));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isMounted.current || tasks.length !== 0) {
+      localStorage.setItem('tasks', JSON.stringify(tasks))
+    } else {
+      isMounted.current = true;
+    }
   }, [tasks]);
 
   const handleNewTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,5 +80,7 @@ const TaskList = (props: TaskListProps): JSX.Element => {
     </div>
   );
 };
+
+TaskList.defaultProps = defaultProps;
 
 export default TaskList;
