@@ -8,7 +8,7 @@ const TaskList = (props: TaskListProps): JSX.Element => {
   const [tasks, setTasks] = useState<Task[]>([]);
   
   useEffect(() => {
-    setTasks(
+    setTasks(() => {
       if (props.tasks) {
         return props.tasks;
       }
@@ -17,6 +17,7 @@ const TaskList = (props: TaskListProps): JSX.Element => {
         return JSON.parse(storedTasks);
       }
       return [];
+    }
   )}, []);
 
   useEffect(() => {
